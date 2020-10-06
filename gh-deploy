@@ -9,4 +9,5 @@ MESSAGE="$5"
 
 if [[ -n "$FROM_BRANCH" ]]; then
     gh pr create --title "${MESSAGE:-"Deploy release from $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
+    gh pr merge "$FROM_BRANCH" --merge --delete-branch=false
 fi
