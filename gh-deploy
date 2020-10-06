@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+WAIT=2
+
 BRANCH="$1"
 DIRECTION="$2"
 FROM_BRANCH="$3"
@@ -8,6 +10,7 @@ WITH="$4"
 MESSAGE="$5"
 
 if [[ -n "$FROM_BRANCH" ]]; then
-    gh pr create --title "${MESSAGE:-"Deploy release from $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
+    gh pr create --title "${MESSAGE:-"Deploy $BRANCH $DIRECTION $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
+    sleep $WAIT
     gh pr merge "$FROM_BRANCH" --merge --delete-branch=false
 fi
