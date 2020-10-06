@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+BRANCH="$1"
+DIRECTION="$2"
+FROM_BRANCH="$3"
+
+WITH="$4"
+MESSAGE="$5"
+
+if [[ -n "$FROM_BRANCH" ]]; then
+    COMMAND="gh pr create --title \"${MESSAGE:"Deploy release from ${FROM_BRANCH} at $(date "+%Y-%m-%d %H:%M")"}\" --head $FROM_BRANCH --base $BRANCH"
+    echo $COMMAND
+fi
