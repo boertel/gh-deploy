@@ -8,6 +8,5 @@ WITH="$4"
 MESSAGE="$5"
 
 if [[ -n "$FROM_BRANCH" ]]; then
-    COMMAND="gh pr create --title \"${MESSAGE:"Deploy release from ${FROM_BRANCH} at $(date "+%Y-%m-%d %H:%M")"}\" --head $FROM_BRANCH --base $BRANCH"
-    echo $COMMAND
+    gh pr create --title "${MESSAGE:-"Deploy release from $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
 fi
