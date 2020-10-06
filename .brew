@@ -1,1 +1,2 @@
-install=bin.install gh-deploy
+name=GhDeploy
+install=bin.install "gh-deploy"
