@@ -2,6 +2,21 @@
 
 WAIT=2
 
+PREVIEW=0
+
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+  -h || --help )
+    echo "gh-deploy [options] <branch that will be deployed> from <base branch> [with <message>]"
+    echo -e "\nOPTIONS:"
+    echo -e "\t-p/--preview:\tpreview git logs that will be deployed"
+    exit
+    ;;
+  -p | --preview )
+    PREVIEW=1
+    ;;
+esac; shift; done
+if [[ "$1" == '--' ]]; then shift; fi
+
 BRANCH="$1"
 DIRECTION="$2"
 FROM_BRANCH="$3"
@@ -9,8 +24,14 @@ FROM_BRANCH="$3"
 WITH="$4"
 MESSAGE="$5"
 
+if [[ $PREVIEW -eq 1 ]]; then
+    git log --pretty=format:'%Cred%h%Creset %Cgreen(%cD)%Creset %C(cyan)%an%Creset\t%s %C(yellow)%d%Creset' --abbrev-commit $BRANCH..$FROM_BRANCH
+    exit
+fi
+
+
 if [[ -n "$FROM_BRANCH" ]]; then
-    gh pr create --title "${MESSAGE:-"Deploy $BRANCH $DIRECTION $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
-    sleep $WAIT
-    gh pr merge "$FROM_BRANCH" --merge --delete-branch=false
+    #gh pr create --title "${MESSAGE:-"Deploy $BRANCH $DIRECTION $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
+    #sleep $WAIT
+    #gh pr merge "$FROM_BRANCH" --merge --delete-branch=false
 fi
