@@ -24,7 +24,7 @@ FROM_BRANCH="$3"
 WITH="$4"
 MESSAGE="$5"
 
-git pull
+git fetch origin
 git log --pretty=format:'%Cred%h%Creset %Cgreen(%cD)%Creset %C(cyan)%cn%Creset%x09%s %C(yellow)%d%Creset' --abbrev-commit origin/$BRANCH..origin/$FROM_BRANCH
 
 if [[ $PREVIEW -eq 1 ]]; then
