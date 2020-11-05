@@ -24,14 +24,15 @@ FROM_BRANCH="$3"
 WITH="$4"
 MESSAGE="$5"
 
+git log --pretty=format:'%Cred%h%Creset %Cgreen(%cD)%Creset %C(cyan)%an%Creset\t%s %C(yellow)%d%Creset' --abbrev-commit $BRANCH..$FROM_BRANCH
+
 if [[ $PREVIEW -eq 1 ]]; then
-    git log --pretty=format:'%Cred%h%Creset %Cgreen(%cD)%Creset %C(cyan)%an%Creset\t%s %C(yellow)%d%Creset' --abbrev-commit $BRANCH..$FROM_BRANCH
     exit
 fi
 
 
 if [[ -n "$FROM_BRANCH" ]]; then
-    #gh pr create --title "${MESSAGE:-"Deploy $BRANCH $DIRECTION $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH"
-    #sleep $WAIT
-    #gh pr merge "$FROM_BRANCH" --merge --delete-branch=false
+    gh pr create --title "${MESSAGE:-"Deploy $BRANCH $DIRECTION $FROM_BRANCH"}" --body "" --head "$FROM_BRANCH" --base "$BRANCH" --label "release"
+    sleep $WAIT
+    gh pr merge "$FROM_BRANCH" --merge --delete-branch=false
 fi
